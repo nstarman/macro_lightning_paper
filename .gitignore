@@ -1,0 +1,25 @@
+# git-ignore file
+# split into default and project-specific sections
+
+###############################################################################
+# Project-Specific
+
+# scratch folder
+scratch/
+
+# _old
+**/_old
+
+
+###############################################################################
+# Default
+
+# Latex Files
+*.aux
+*.blg
+*.gz
+*.out
+*.fls
+*.fdb_latexmk
+
+*.DS_Store
