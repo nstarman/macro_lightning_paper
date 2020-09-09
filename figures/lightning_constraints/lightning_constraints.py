@@ -47,7 +47,6 @@ from macro_lightning.utils import qnorm, qarange
 
 load_saved = True
 
-PI = np.pi
 KMS = u.km / u.s
 
 vcirc = 220.0 * KMS
@@ -82,7 +81,6 @@ vesc_sun_at_earth = 42.1 * u.km / u.s
 vesc_earth = parameters.solar_system_vesc_params.get()["Earth"]
 
 vminE = qnorm(vesc_sun_at_earth, vesc_earth)
-vminE
 
 # A_{det}*\rho_{DM}*T; the quantity outside the integral
 ArhoE = 3 * u.g * u.s / u.m
@@ -149,7 +147,6 @@ vesc_sun_at_jupiter = 18.5 * u.km / u.s
 vesc_jupiter = parameters.solar_system_vesc_params.get()["Jupiter"]
 
 vminJ = qnorm(vesc_sun_at_earth, vesc_jupiter)
-vminJ
 
 # A_{det}*\rho_{DM}*T; the quantity outside the integral
 ArhoJ = 2e5 / 3 * (u.g * u.s / u.m)
@@ -218,7 +215,7 @@ with plot.constraints_plot(
     sigmin=sigmin,
     sigmax=sigmax,
     all_constrs=True,  # previous constraints
-    savefig="figures/lightningconstraints.pdf",
+    savefig="lightningconstraints.pdf",
 ) as (fig, ax, m_arr, ymin, ymax):
 
     plt.fill_between(
@@ -228,11 +225,27 @@ with plot.constraints_plot(
         where=None,
         facecolor="none",
         edgecolor="black",
-        hatch="//",
+        hatch="\\",
         alpha=1.0,
         zorder=8,
-        label="Earth Lightning",
+        label="Earth: Downward",
     )
+
+    lim = ph.sigma_limit_through_earth(massE)
+    sel = lim > sigmaE
+    plt.fill_between(
+        massE[sel],
+        sigmaE[sel],
+        lim[sel],
+        where=None,
+        facecolor="none",
+        edgecolor="gray",
+        hatch=r"//",
+        alpha=0.8,
+        zorder=8,
+        label="Earth: Upward",
+    )
+
     plt.fill_between(
         massJ,
         sigmaJ,
