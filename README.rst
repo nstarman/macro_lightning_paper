@@ -35,34 +35,7 @@ Attribution
 Please cite the official Physical Review D publication.
 
 If you can't access the PRD paper, copies may be found on `NASA ADS <https://ui.adsabs.harvard.edu/abs/2020arXiv200616272S/exportcitation>`_
-::
-    @ARTICLE{2020arXiv200616272S,
-           author = {{Starkman}, Nathaniel and {Sidhu}, Jagjit and {Winch}, Harrison and {Starkman}, Glenn},
-            title = "{Straight Lightning as a Signature of Macroscopic Dark Matter}",
-          journal = {arXiv e-prints},
-         keywords = {Astrophysics - Cosmology and Nongalactic Astrophysics, Astrophysics - Earth and Planetary Astrophysics, Astrophysics - Instrumentation and Methods for Astrophysics},
-             year = 2020,
-            month = jun,
-              eid = {arXiv:2006.16272},
-            pages = {arXiv:2006.16272},
-    archivePrefix = {arXiv},
-           eprint = {2006.16272},
-     primaryClass = {astro-ph.CO},
-           adsurl = {https://ui.adsabs.harvard.edu/abs/2020arXiv200616272S},
-          adsnote = {Provided by the SAO/NASA Astrophysics Data System}
-    }
-
 OR on the `arXiv <https://arxiv.org/abs/2006.16272>`_:
-:: 
-
-    @misc{starkman2020straight,
-          title={Straight Lightning as a Signature of Macroscopic Dark Matter}, 
-          author={Nathaniel Starkman and Jagjit Sidhu and Harrison Winch and Glenn Starkman},
-          year={2020},
-          eprint={2006.16272},
-          archivePrefix={arXiv},
-          primaryClass={astro-ph.CO}
-    }
 
 If you use the code in a way that does not merit a paper citation, cite the code with |DOI|
 ::
