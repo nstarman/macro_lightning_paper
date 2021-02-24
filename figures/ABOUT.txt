@@ -1,9 +1,0 @@
-TITLE   : figures
-
-
-FILES:
-——————
-/ lightning_constraints
-	Macro phase-space constraints from lightning & bolides
-/ macro_schematic
-	A not-to-scale schematic of how a macro creates a plasma channel through which lightning will flow.
