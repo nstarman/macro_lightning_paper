@@ -3227,6 +3227,25 @@ window.QuartoSupport = function () {
       if (Reveal.isReady()) bind(); else Reveal.on('ready', bind);
     })();
     </script>
+    <script>
+    // For a cut deck embedded on a page: `deck.html?only=id1,id2` keeps just those slides, in that order, so
+    // the reader steps through the ones the page is about and no further. Without `only`, all slides stay.
+    (function () {
+      var only = new URLSearchParams(location.search).get('only');
+      if (!only) return;
+      var keep = only.split(',');
+      function trim() {
+        var slides = document.querySelector('.reveal .slides');
+        slides.querySelectorAll(':scope > section').forEach(function (s) {
+          if (keep.indexOf(s.id) < 0) s.remove();
+        });
+        keep.forEach(function (id) { var s = document.getElementById(id); if (s) slides.appendChild(s); });
+        Reveal.sync();
+        Reveal.slide(0, 0, -1);
+      }
+      if (Reveal.isReady()) trim(); else Reveal.on('ready', trim);
+    })();
+    </script>
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
