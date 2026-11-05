@@ -10,7 +10,11 @@ paper:
   doi: 10.1103/PhysRevD.103.063024
   bibcode: 2021PhRvD.103f3024S
 # How this paper runs Python, if not plain `python` (e.g. `uv run --locked python`).
-# python: python
+python: uv run --no-project --with numpy --with matplotlib --with "figpress-apps==2026.11.1" python
 # Interactive figures (figpress-apps apps in webapps/<name>/), each with the data files it reads.
-# webapps:
-#   globe: { inputs: [src/data/example.npz], figure: fig:example }
+webapps:
+  macro-explorer:
+    inputs: [src/static/constraint_grids.npz, src/scripts/constraint_grids.py, src/scripts/lightning.py]
+    explore: true
+    title: "Macro constraint explorer"
+    text: "Every current macro constraint on one plane, with the straight-lightning reach recomputed as you change the exposure."
