@@ -3,10 +3,21 @@ layout: ../components/Page.astro
 tab: overview
 ---
 import Fig from '../components/Fig.astro';
+import TalkSlides from '../components/TalkSlides.astro';
 
 Macroscopic dark matter, or macros, covers any dark matter that comes as large composite objects
 instead of single particles. Macros would interact with ordinary matter mostly by bumping into it,
 so what matters is how heavy they are and how big they are.
+
+A lightning strike is two events. First an ionized channel forms between the cloud and the ground,
+and then the current flows down it. Ordinary lightning is jagged because that channel is built in
+many short steps, each in a random direction.
+
+<div class="syw-card">
+  <TalkSlides slide="a-lightning-review">
+    The channel forms first, then the energy flows. Step through to see the stepped leader build up.
+  </TalkSlides>
+</div>
 
 A macro that crosses the atmosphere heats the air along its path. If its cross-section is large
 enough, it leaves a straight channel of ionized plasma behind it. We work out when that channel is
@@ -16,10 +27,24 @@ conductive enough to act like the start of a lightning bolt.
   <Fig label="fig:macro_graphic" />
 </div>
 
-Ordinary lightning is jagged because the channel it follows is built in many short steps, each in
-a random direction. Inside a thunderstorm, a macro's channel could replace all of those steps with
-one. The bolt would then follow the macro's path, and it would be far straighter than any lightning
-we normally see. Neither wind shear nor magnetohydrodynamic instabilities would bend it much.
+<div class="syw-card">
+  <TalkSlides slide="forming-plasma-channels">
+    The heat the macro leaves behind spreads out and cools. The ionized area grows and then shrinks,
+    and the terms of the heat equation light up as each part comes in.
+  </TalkSlides>
+</div>
+
+Inside a thunderstorm, a macro's channel could replace all of the leader's steps with one. The bolt
+would then follow the macro's path, and it would be far straighter than any lightning we normally
+see. Neither wind shear nor magnetohydrodynamic instabilities would bend it much.
+
+<div class="syw-card">
+  <TalkSlides slide="q-how-straight-is-straight">
+    How straight is straight? Lightning has been made to follow straight ionized channels, from the
+    IVY-MIKE nuclear test to laser-guided discharges in the lab. Those tests show what bends such a
+    channel, and how little that is over the length of a bolt.
+  </TalkSlides>
+</div>
 
 We looked for reports of very straight lightning. The best candidate, photographed in Zimbabwe, is
 probably not straight enough to have come from a macro.
