@@ -102,6 +102,18 @@ export function tex(s, refs = {}) {
     : chunk.split(/(?<!\\)\$/).map((part, i) => (i % 2 ? math(part) : prose(part))).join(''))).join('');
 }
 
+/** tex() as plain text, for an image's alt: the caption as the page reads it, with no tags; its
+ * $math$ as TeX source ("$x^{2}$" → "x^{2}", which KaTeX's glyphs would flatten to "x2"). */
+export function plain(s, refs = {}) {
+  const src = [];
+  s = s.replace(/(?<!\\)(\$\$?)((?:\\.|[^$\\])*)\1/g, (_, d, m) => `\u0001${src.push(m.trim()) - 1}\u0001`);
+  return tex(s, refs).replace(/<span class="mspace"[^>]*><\/span>/g, ' ').replace(/<[^>]*>/g, '').replace(/\u200b/g, '')
+    .replace(/&nbsp;/g, ' ').replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(n))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+    .replace(/\u0001(\d+)\u0001/g, (_, i) => src[i]).replace(/\s+/g, ' ').trim();
+}
+
 /** A caption's short title, for a gallery: its leading \emph{…} title if it has one, else its first
  * sentence, either cut at the first colon, comma, semicolon or parenthesis outside math and braces
  * ("Mock observation of the GD-1 stream: the stream's…" → "Mock observation of the GD-1 stream"). */

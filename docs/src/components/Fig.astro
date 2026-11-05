@@ -5,7 +5,7 @@
 // downloads.
 import Webapp from './Webapp.astro';
 import { facts, figure, url } from '../lib/facts.js';
-import { tex } from '../lib/tex.js';
+import { plain, tex } from '../lib/tex.js';
 
 const { label, link = true } = Astro.props;
 const fig = figure(label);
@@ -14,7 +14,7 @@ const number = facts.figures.indexOf(fig) + 1;
 const refs = Object.fromEntries(facts.figures.map((f, i) => [f.label, String(i + 1)]));
 // A download's link text: its format, or with several panels its file name, so each is told apart.
 const linkText = (file, format) => (fig.images.length > 1 ? file.split('/').pop() : format);
-const alt = `Paper Figure ${number}: ${fig.caption.replace(/\$[^$]*\$|\\[A-Za-z]+|[{}]/g, '').slice(0, 200)}`;
+const alt = `Paper Figure ${number}: ${plain(fig.caption, refs).slice(0, 200)}`;
 ---
 {app && <Webapp name={app} links={false} />}
 <figure id={fig.slug}>
