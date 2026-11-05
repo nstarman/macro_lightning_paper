@@ -10,7 +10,7 @@ paper:
   doi: 10.1103/PhysRevD.103.063024
   bibcode: 2021PhRvD.103f3024S
 # How this paper runs Python, if not plain `python` (e.g. `uv run --locked python`).
-python: uv run --no-project --with numpy --with matplotlib --with "figpress-apps==2026.11.1" python
+# python: python
 # Interactive figures (figpress-apps apps in webapps/<name>/), each with the data files it reads.
 webapps:
   macro-explorer:

@@ -1,2 +1,7 @@
 dependencies:
   - conda-forge::python=3.12
+  - conda-forge::numpy=2.1
+  - conda-forge::matplotlib=3.9
+  - conda-forge::pip
+  - pip:
+      - figpress-apps==2026.11.1
