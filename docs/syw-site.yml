@@ -18,3 +18,8 @@ webapps:
     explore: true
     title: "Macro constraint explorer"
     text: "Every current macro constraint on one plane, with the straight-lightning reach recomputed as you change the exposure."
+  strike-count:
+    inputs: []
+    explore: true
+    title: "Seeing no straight lightning"
+    text: "Strikes from macros would arrive at random. Set how many an exposure should see, and how the chance of seeing none turns into the paper's limit."
