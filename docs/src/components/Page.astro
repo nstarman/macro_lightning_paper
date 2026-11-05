@@ -47,8 +47,9 @@ const item = root && resolve(root);
   .syw-tabs a:hover { color: var(--ink); }
   .syw-tabs a.on { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); }
   .syw figure { margin: 2rem 0; }
-  .syw figure img { display: block; margin-inline: auto; max-width: 100%; height: auto; background: #fff; }
-  .syw figcaption { font-size: .92em; }
+  .syw figure:has(> img) { text-align: center; } /* a narrow image centred; panels side by side as they fit */
+  .syw figure img { max-width: 100%; height: auto; background: #fff; }
+  .syw figcaption { font-size: .92em; text-align: start; }
   /* The Figures tab's gallery: as many columns of at least 220px as fit (one on a phone). */
   .syw .syw-gallery { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
   .syw .syw-gallery-item {

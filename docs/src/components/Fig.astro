@@ -12,6 +12,8 @@ const fig = figure(label);
 const app = Object.entries(facts.webapps ?? {}).find(([, w]) => w.replaces && w.figure === fig.label)?.[0];
 const number = facts.figures.indexOf(fig) + 1;
 const refs = Object.fromEntries(facts.figures.map((f, i) => [f.label, String(i + 1)]));
+// A download's link text: its format, or with several panels its file name, so each is told apart.
+const linkText = (file, format) => (fig.images.length > 1 ? file.split('/').pop() : format);
 const alt = `Paper Figure ${number}: ${fig.caption.replace(/\$[^$]*\$|\\[A-Za-z]+|[{}]/g, '').slice(0, 200)}`;
 ---
 {app && <Webapp name={app} links={false} />}
@@ -27,11 +29,11 @@ const alt = `Paper Figure ${number}: ${fig.caption.replace(/\$[^$]*\$|\\[A-Za-z]
         {link && <a href={url(`figures/${fig.slug}/`)}>Open</a>}
       </span>
       <span>
-        {/* "Download HTML · PDF · PNG": the word once, each format its own link. */}
+        {/* "Download HTML · PDF · PNG" (with panels, "a.pdf · b.pdf · a.png · b.png"): the word once. */}
         {[
           ...(app ? [<a href={url(`generated/webapps/${app}/${app}.html`)} download>HTML</a>] : []),
-          ...fig.images.filter((im) => im.file.endsWith('.pdf')).map((im) => <a href={url(`generated/figures/${im.file}`)}>PDF</a>),
-          ...fig.images.filter((im) => im.png).map((im) => <a href={url(`generated/figures/${im.png}`)} download>PNG</a>),
+          ...fig.images.filter((im) => im.file.endsWith('.pdf')).map((im) => <a href={url(`generated/figures/${im.file}`)}>{linkText(im.file, 'PDF')}</a>),
+          ...fig.images.filter((im) => im.png).map((im) => <a href={url(`generated/figures/${im.png}`)} download>{linkText(im.png, 'PNG')}</a>),
         ].map((a, i) => <>{i > 0 ? ' · ' : 'Download '}{a}</>)}
       </span>
     </div>

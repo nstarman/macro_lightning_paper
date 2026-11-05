@@ -89,13 +89,13 @@ function prose(s) {
  * ("(Appendix~\ref{app:x})" reads "(Appendix)"), \autoref/\cref to "the paper" ("(\cref{app:x})"
  * reads "(see the paper)"). */
 export function tex(s, refs = {}) {
-  // The site shows no equations, so an equation reference points into the paper
-  // ("…where macros satisfy \eqref{eq:x}" reads "…satisfy an equation in the paper").
+  // The site shows no equations, so an equation reference points into the paper: "satisfy
+  // \eqref{eq:x}" and "satisfy Eq.~\eqref{eq:x}" read "satisfy an equation in the paper".
   s = s.replace(/\(\s*~?\\eqref\{[^}]*\}\s*\)/g, '(the paper)')
     .replace(/(\b(?:Eqs?\.|Equations?)\s*)?(~?)\\eqref\{[^}]*\}/g, (_, word, tie) => `${tie && !word ? ' ' : ''}an equation in the paper`);
   s = s.replace(/(~?)\\(auto|c|C)?ref\{([^}]*)\}/g, (_, tie, kind, l) => (
     l in refs ? tie + (kind ? 'Figure~' : '') + refs[l] : kind ? `${tie}the paper` : ''));
-  s = s.replace(/(^\s*|[.!?]\s+)the paper/g, '$1The paper');
+  s = s.replace(/(^\s*|[.!?]\s+)(the paper|an equation in the paper)/g, (_, p, w) => p + w[0].toUpperCase() + w.slice(1));
   s = s.replace(/\(the paper\)/g, '(see the paper)');
   return s.split(/(\$\$[^$]*\$\$)/).map((chunk) => (chunk.startsWith('$$') && chunk.endsWith('$$') && chunk.length > 3
     ? katex.renderToString(siunitx(chunk.slice(2, -2)), { throwOnError: true, displayMode: true, macros })
