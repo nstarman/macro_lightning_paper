@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macro constraint explorer</title>
+<link rel="stylesheet" href="figpress-apps/index.css">
+<style>
+  body { margin: 0; background: var(--fk-bg); }
+  main { max-width: 1500px; margin: 0 auto; padding: 12px; font-family: var(--fk-font); color: var(--fk-fg); }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; font-size: 13px; color: var(--fk-muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Macroscopic dark matter: maximal f<sub>DM</sub>(m, σ)</h1>
+  <p>Constraint maps from <a href="https://arxiv.org/abs/2609.05626">Picker+2026</a> (macrolimits) plus the projected
+    straight-lightning reach recast from <a href="https://arxiv.org/abs/2006.16272">Starkman+2021</a>.
+    Toggle constraints, vary the lightning exposure and efficiency, hover for values.</p>
+  <div id="app"></div>
+</main>
+<script type="module">
+  import { run } from "figpress-apps/index.js";
+  import app from "app/widget.js";
+  run(app, document.getElementById("app"));
+</script>
+</body>
+</html>

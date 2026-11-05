@@ -1,0 +1,83 @@
+---
+import Page from '../components/Page.astro';
+import PaperLinks from '../components/PaperLinks.astro';
+import { facts } from '../lib/facts.js';
+import { tex } from '../lib/tex.js';
+import { resolve, root, softwarePapers, softwareUsed, links } from '../lib/store.js';
+import { toBibtex } from '@nstarkman/data-resolver/bibtex.js';
+
+const { arxiv, doi } = facts.paper;
+const first = facts.authors[0];
+const key = `${first?.surname ?? 'paper'}:${arxiv ?? doi ?? 'preprint'}`.replace(/[^\w:.-]/g, '');
+const fields = [
+  ['author', facts.authors.map((a) => (a.surname ? `${a.surname}, ${a.given ?? ''}`.trim() : a.name)).join(' and ')],
+  ['title', `{${facts.title}}`],
+  arxiv && ['eprint', arxiv],
+  arxiv && ['archivePrefix', 'arXiv'],
+  doi && ['doi', doi],
+].filter(Boolean);
+const bibtex = `@article{${key},\n${fields.map(([k, v]) => `  ${k} = {${v}}`).join(',\n')}\n}`;
+
+// The packages the paper used (its refs on nstarkman.space), each with how to cite it:
+// its own papers (DOI where published), else its repository.
+const software = root ? softwareUsed([resolve(root)]).map((s) => ({
+  s,
+  papers: softwarePapers(s).map((p) => ({ ...p, item: resolve(p.id) })),
+  repo: links(s).find((l) => l.rel === 'code' || l.rel === 'repo'),
+})) : [];
+// Each package's BibTeX: its papers' entries, without the abstract (what a reader pastes).
+const bib = (papers) => papers.filter((p) => p.item).map((p) => toBibtex(p.item).replace(/,\n\s*abstract\s*=\s*\{.*\}(?=,?\n)/, '')).join('\n\n');
+---
+<Page title="Cite" tab="cite">
+  <PaperLinks />
+  {/* The BibTeX as on nstarkman.space's Publications (site-layout's .bibtex), Copy in its corner. */}
+  {arxiv || doi
+    ? <div class="bibtex syw-bibtex"><button type="button" class="bibcopy">Copy</button><pre>{bibtex}</pre></div>
+    : <p>The citation appears here once the paper is on arXiv.</p>}
+  {software.length > 0 && (
+    <section class="syw-software">
+      <h3>Software</h3>
+      <p>This paper used these software packages.</p>
+      <ul>
+        {software.map(({ s, papers, repo }) => (
+          <li>
+            <strong><a href={`https://nstarkman.space/software/#sw-${s.id}`}>{s.title}</a></strong>
+            {s.summary && <> — <span set:html={tex(s.summary)} /></>}
+            <br />Cite: {papers.length
+              ? papers.map((p, i) => <>{i > 0 && '; '}<a href={p.url}>{p.item?.title ?? p.label}</a>{p.item?.doi && <> (doi:<a href={`https://doi.org/${p.item.doi}`}>{p.item.doi}</a>)</>}</>)
+              : repo ? <a href={repo.url}>its repository</a> : 'its website'}
+            {bib(papers) && <button type="button" class="syw-copybib syw-copybib--sm" data-bib={bib(papers)}><svg class="ico" aria-hidden="true"><use href="#i-copy" /></svg>BibTeX</button>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Page>
+
+<script>
+  // Copy copies the BibTeX; if the clipboard is refused, it selects it to copy by hand. The paper
+  // card's own BibTeX has a Copy too, with a page-wide listener: this one stops here.
+  const btn = document.querySelector('.syw-bibtex .bibcopy');
+  btn?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const pre = btn.nextElementSibling;
+    try {
+      await navigator.clipboard.writeText(pre.textContent);
+      btn.textContent = 'Copied';
+    } catch {
+      getSelection().selectAllChildren(pre);
+      btn.textContent = 'Selected';
+    }
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+  });
+  // The Software list's buttons copy their package's BibTeX (kept in data-bib, not shown).
+  for (const b of document.querySelectorAll<HTMLButtonElement>('.syw-copybib')) {
+    b.addEventListener('click', async () => {
+      const label = b.lastChild.textContent;
+      await navigator.clipboard.writeText(b.dataset.bib).catch(() => {});
+      b.lastChild.textContent = 'Copied';
+      b.classList.add('done');
+      setTimeout(() => { b.lastChild.textContent = label; b.classList.remove('done'); }, 1500);
+    });
+  }
+</script>

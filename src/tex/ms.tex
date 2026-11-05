@@ -32,7 +32,9 @@
  reprint,
  amsmath,amssymb,
  aps,
+ nofootinbib, % footnotes on the page: REVTeX collecting them into the bibliography breaks showyourwork's preprocessing
 ]{revtex4-2}
+\usepackage{showyourwork}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +55,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Implementing Package Settings
 
-\graphicspath{{figures/}{../figures/}}
 
 \begin{document}
 
@@ -63,14 +64,23 @@
 
 \title{Straight Lightning as a Signature of Macroscopic Dark Matter}
 
-\author{Nathaniel Starkman, Harrison Winch}%
-  \email{nathaniel.starkman@mail.utoronto.ca,\newline harrison.winch@mail.utoronto.ca}
+\author{Nathaniel Starkman}
+\email{nathaniel.starkman@mail.utoronto.ca}
 \affiliation{%
- David A. Dunlap Department of Astronomy and Astrophysics / Dunlap Institute, University of Toronto, CA\\
+ David A. Dunlap Department of Astronomy and Astrophysics / Dunlap Institute, University of Toronto, CA
+}%
+\author{Harrison Winch}
+\email{harrison.winch@mail.utoronto.ca}
+\affiliation{%
+ David A. Dunlap Department of Astronomy and Astrophysics / Dunlap Institute, University of Toronto, CA
 }%
 
-\author{Jagjit Singh Sidhu, Glenn Starkman}
-\email{jxs1325@case.edu, gds6@case.edu}
+\author{Jagjit Singh Sidhu}
+\email{jxs1325@case.edu}
+\affiliation{Physics Department/CERCA/ISO Case Western Reserve University
+Cleveland, Ohio 44106-7079, USA}
+\author{Glenn Starkman}
+\email{gds6@case.edu}
 \affiliation{Physics Department/CERCA/ISO Case Western Reserve University
 Cleveland, Ohio 44106-7079, USA}
 
@@ -252,7 +262,7 @@ Cleveland, Ohio 44106-7079, USA}
 
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=\linewidth]{macro_schematic/macro_schematic.pdf}
+            \includegraphics[width=\linewidth]{figures/macro_schematic.pdf}
             \caption{\textit{(Not to scale)} Graphic representation of macro plasma channel seeding continuous leader. Channel direction can also be from ground to cloud. Macro plasma trail expands to maximum area $A^{\rm{max}}$ before cooling. As $v_{\rm{step}} < v_{\rm{macro}} < v_{\rm{leader}}$, the lightning-leader takes no ``steps", instead propagating continuously with the macro trail.}
             \label{fig:macro_graphic}
         \end{figure}
@@ -275,7 +285,7 @@ Cleveland, Ohio 44106-7079, USA}
     	}.
         and taking the relative motion between the macro and Earth into account, we find that $71\%$ of all macros in the distribution will be moving at at least 250 km/s.
 
-        Additionally, we expect that the mechanism outlined here may not hold true if the macro comes in at a trajectory that is mostly parallel to the ground. There is a critical angle at which a macro trail is sufficiently misaligned from the storm electric field such that the electric field induces offshoot lightning channels, obviating the straight-lightning prediction. This is poorly constrained because plasma channels in air are analogous to wires surrounded by an insulator. The breakdown voltage is highly dependent on atmospheric properties such as moisture and particulate content, etc. Despite this, order of magnitude calculations suggest the critical angle is approximately unity. As example, considering a cloud-to-ground macro-induced plasma channel for a critical angle of 30$\degree$ from a perfectly perpendicular trajectory, $25\%$ of all macro trajectories would fall in this cone. We use this number this when calculating the maximum mass that could be probed by a careful monitoring of thunderstorms on Earth.
+        Additionally, we expect that the mechanism outlined here may not hold true if the macro comes in at a trajectory that is mostly parallel to the ground. There is a critical angle at which a macro trail is sufficiently misaligned from the storm electric field such that the electric field induces offshoot lightning channels, obviating the straight-lightning prediction. This is poorly constrained because plasma channels in air are analogous to wires surrounded by an insulator. The breakdown voltage is highly dependent on atmospheric properties such as moisture and particulate content, etc. Despite this, order of magnitude calculations suggest the critical angle is approximately unity. As example, considering a cloud-to-ground macro-induced plasma channel for a critical angle of $30^\circ$ from a perfectly perpendicular trajectory, $25\%$ of all macro trajectories would fall in this cone. We use this number this when calculating the maximum mass that could be probed by a careful monitoring of thunderstorms on Earth.
 
     % subsection signatures_of_macro_induced_lightning (end)
 
@@ -370,7 +380,7 @@ Cleveland, Ohio 44106-7079, USA}
 % -----------------------------------------------------------------------------
 
 \begin{figure*}
-    \includegraphics[width=\textwidth]{lightning_constraints/lightningconstraints.pdf}
+    \includegraphics[width=\textwidth]{figures/lightningconstraints.pdf}
     \caption{
         Figure 1 of \citep{Sidhu2020reconsider} with the updated potential constraints discussed in the text. Earth lightning projections are in black hatching and Jupiter lightning projections are in cyan hatching. The lower right right constraint curves up because the number density of macros decreases with increased mass which requires a larger fraction of the velocity distribution. The step in the lower right is the average observed minimum macro velocity due to gravitational infall.
         \\
@@ -440,7 +450,7 @@ Cleveland, Ohio 44106-7079, USA}
 % -----------------------------------------------------------------------------
 
 \bibliographystyle{apsrev4-1}
-\bibliography{references}
+\bibliography{bib}
 
 % -----------------------------------------------------------------------------
 

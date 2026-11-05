@@ -1,0 +1,16 @@
+---
+// The paper's links as buttons, each its mark (from the site's icon sprite) and its name.
+import { facts } from '../lib/facts.js';
+
+const { arxiv, doi, bibcode } = facts.paper;
+const links = [
+  bibcode && ['ADS', `https://ui.adsabs.harvard.edu/abs/${bibcode}`, 'ads'],
+  arxiv && ['arXiv', `https://arxiv.org/abs/${arxiv}`, 'arxiv'],
+  doi && ['Journal', `https://doi.org/${doi}`, 'paper'],
+].filter(Boolean);
+---
+<p class="syw-links">
+  {links.map(([label, href, icon]) => (
+    <a class="syw-linkbtn" href={href}><svg class="ico" aria-hidden="true" focusable="false"><use href={`#i-${icon}`} /></svg>{label}</a>
+  ))}
+</p>

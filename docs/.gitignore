@@ -1,0 +1,6 @@
+# made by `syw-site build`
+public/generated/
+.syw-site/
+dist/
+node_modules/
+.astro/

@@ -1,0 +1,33 @@
+---
+import Page from '../../components/Page.astro';
+import Fig from '../../components/Fig.astro';
+import Webapp from '../../components/Webapp.astro';
+import { facts, url } from '../../lib/facts.js';
+
+export function getStaticPaths() {
+  return facts.figures.map((f) => ({ params: { slug: f.slug }, props: { fig: f } }));
+}
+const { fig } = Astro.props;
+const number = facts.figures.indexOf(fig) + 1;
+// Webapps that name this figure without replacing it go above it; Fig draws one that replaces it.
+const apps = Object.entries(facts.webapps ?? {}).filter(([, w]) => w.figure === fig.label && !w.replaces);
+---
+<Page title={`Paper Figure ${number}`} tab="figures">
+  <a slot="above" class="syw-back" href={url(`figures/#${fig.slug}`)} data-back>← All figures</a>
+  {apps.map(([name]) => <Webapp name={name} />)}
+  <Fig label={fig.slug} link={false} />
+</Page>
+
+<script>
+  // Back to the gallery where the reader left it: from the gallery, the browser's own back (which
+  // restores its scroll position); from anywhere else, the link opens the gallery at this figure's card.
+  const back = document.querySelector<HTMLAnchorElement>('a[data-back]');
+  back?.addEventListener('click', (e) => {
+    const gallery = new URL(back.href, location.href);
+    gallery.hash = '';
+    if (document.referrer && new URL(document.referrer).pathname === gallery.pathname && history.length > 1) {
+      e.preventDefault();
+      history.back();
+    }
+  });
+</script>

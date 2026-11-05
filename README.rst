@@ -29,6 +29,34 @@ carefully monitoring Jupiter, e.g. using a Jupiter probe.
 All code and data is available at https://github.com/cwru-pat/macro_lightning.
 
 
+Building the paper and its site
+-------------------------------
+
+The paper is a `showyourwork <https://github.com/showyourwork/showyourwork>`_ repository
+(``src/tex/ms.tex``; the published figures are in ``src/static/``), with a docs site made by
+`syw-site <https://github.com/nstarman/syw-site>`_ in ``docs/``, published at
+https://nstarkman.space/macro_lightning_paper/.
+
+.. code-block:: bash
+
+    showyourwork build          # the paper, ms.pdf
+    syw-site build && syw-site serve
+
+The site's Explore tab is the macro constraint explorer (``webapps/macro-explorer/``, a
+`figpress-apps <https://github.com/nstarman/figpress-apps>`_ app): every constraint from
+`Picker et al. (2026) <https://arxiv.org/abs/2609.05626>`_ with this paper's straight-lightning reach
+recomputed in the browser. Its grids are cached in ``src/static/constraint_grids.npz`` (recompute with
+``src/scripts/constraint_grids.py`` and a clone of `macrolimits <https://github.com/zpicker/macrolimits>`_).
+Test it after a site build:
+
+.. code-block:: bash
+
+    APP_DATA=docs/.syw-site/webapps/macro-explorer/data/ figpress-apps test webapps/macro-explorer
+
+On Apple Silicon add ``--scheduler greedy`` (``syw-site build -- --scheduler greedy``): Snakemake's
+default scheduler calls an Intel-only solver. ``v1/`` and ``v2/`` hold the arXiv versions as published.
+
+
 Attribution
 -----------
 

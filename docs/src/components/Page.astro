@@ -1,0 +1,107 @@
+---
+// Every page of the docs site: the website's layout; the paper's entry as nstarkman.space
+// draws it (the website's own Publication, from card.json), or its title before it has a
+// record there (with its authors, from the paper); then the tabs. MDX pages use it as `layout:` in their frontmatter.
+import SiteLayout from '@nstarkman/site-layout/SiteLayout.astro';
+import Publication from '@nstarkman/research-kit/Publication.astro';
+import Authors from './Authors.astro';
+import 'katex/dist/katex.min.css';
+import { facts, url } from '../lib/facts.js';
+import { tex } from '../lib/tex.js';
+import { card, resolve, root } from '../lib/store.js';
+import { tabs } from '../lib/tabs.js';
+
+const { title, frontmatter, tab = frontmatter?.tab ?? 'overview' } = Astro.props;
+const heading = title ?? frontmatter?.title;
+const paper = facts.title.replace(/\$[^$]*\$/g, '').replace(/\\[A-Za-z]+|[{}]/g, '').trim();
+const item = root && resolve(root);
+---
+<SiteLayout title={heading ? `${heading} — ${paper}` : paper} section="/research/" repo={facts.repo}>
+  <main class="wrap syw">
+    {item ? <Publication item={item} abstract card={card.preset} /> : <><h1 class="syw-title" set:html={tex(facts.title)} /><Authors /></>}
+    {/* Not <nav>: the website's stylesheet makes every nav its sticky header. A ruled strip that
+        sticks under it as the page scrolls, like the CV page's contents strip. */}
+    <div class="syw-tabs" role="navigation" aria-label="This paper">
+      {tabs().map((t) => <a class:list={[t.key === tab && 'on']} href={url(t.href)} aria-current={t.key === tab ? 'page' : undefined}>{t.label}</a>)}
+    </div>
+    <slot name="above" />{/* above the heading: a figure page's link back to the gallery */}
+    {heading && <h2 class="syw-heading">{heading}</h2>}
+    <slot />
+  </main>
+</SiteLayout>
+
+<style is:global>
+  .syw { padding-block: 2rem 4rem; }
+  .syw-tabs {
+    position: sticky; top: calc(var(--nav-h) - 1px); z-index: 8;
+    display: flex; align-items: stretch; gap: 1.4rem; height: 2.5rem; margin: 1.5rem 0 1.25rem;
+    overflow-x: auto; scrollbar-width: none; border-block: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--ground) 92%, transparent); backdrop-filter: blur(8px);
+  }
+  .syw-tabs::-webkit-scrollbar { display: none; }
+  .syw-tabs a {
+    flex: none; display: flex; align-items: center; text-decoration: none; white-space: nowrap;
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-mute); box-shadow: inset 0 -2px 0 transparent;
+  }
+  .syw-tabs a:hover { color: var(--ink); }
+  .syw-tabs a.on { color: var(--ink); box-shadow: inset 0 -2px 0 var(--accent); }
+  .syw figure { margin: 2rem 0; }
+  .syw figure:has(> img) { text-align: center; } /* a narrow image centred; panels side by side as they fit */
+  .syw figure img { max-width: 100%; height: auto; background: #fff; }
+  .syw figcaption { font-size: .92em; text-align: start; }
+  /* The Figures tab's gallery: as many columns of at least 220px as fit (one on a phone). */
+  .syw .syw-gallery { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+  .syw .syw-gallery-item {
+    display: flex; flex-direction: column; gap: .4rem; padding: .6rem; text-decoration: none; color: inherit;
+    border: 1px solid var(--rule); border-radius: 10px; background: var(--surface);
+  }
+  .syw .syw-gallery-item:hover { border-color: var(--accent); }
+  .syw .syw-gallery-item { scroll-margin-top: calc(var(--nav-h) + 3.5rem); } /* below the sticky tabs */
+  .syw .syw-gallery-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #fff; border-radius: 6px; }
+  .syw .syw-gallery-head { display: flex; justify-content: space-between; align-items: center; gap: .5rem; font-size: .85em; }
+  .syw .syw-gallery-title { font-size: .85em; line-height: 1.35; color: var(--ink-mute); }
+  .syw .syw-badge {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+    color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: .05rem .45rem;
+  }
+  .syw .syw-back { display: inline-block; margin-bottom: .25rem; font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; color: var(--ink-mute); }
+  .syw .syw-back:hover { color: var(--ink); }
+  .syw iframe { width: 100%; border: 0; }
+  .syw .syw-card { margin: 1.75rem 0; padding: 1rem 1.25rem; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+  .syw .syw-card figure { margin: 0; }
+  .syw .syw-card > p:last-child { margin-bottom: 0; }
+  .syw .fig-links { margin-top: .35rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .syw pre { overflow-x: auto; }
+  /* The paper's links (PaperLinks): mark and name, bordered and inverting on hover like the card's icon buttons. */
+  .syw .syw-links { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .syw .syw-linkbtn {
+    display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .75rem; text-decoration: none;
+    color: var(--ink-mute); border: 1px solid var(--rule-strong); border-radius: .45rem; background: var(--surface); transition: .15s;
+  }
+  .syw .syw-linkbtn .ico { width: .9375rem; height: .9375rem; fill: currentColor; flex: none; }
+  .syw .syw-linkbtn:hover, .syw .syw-linkbtn:focus-visible { color: var(--ground); background: var(--ink); border-color: var(--ink); }
+  /* The Cite page's BibTeX: the Publications block (.bibtex), on a light panel. */
+  .syw .syw-bibtex { margin: 1rem 0 1.5rem; padding: .8rem 1rem; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+  .syw .syw-bibtex pre { font-size: .8rem; }
+  /* The Cite page's Software list: a Copy BibTeX on each package's Cite line. */
+  .syw .syw-copybib {
+    display: inline-flex; align-items: center; gap: .35rem; padding: .2rem .6rem; cursor: pointer;
+    font: inherit; font-size: .85rem; color: var(--ink-mute); border: 1px solid var(--rule-strong); border-radius: .45rem; background: var(--surface); transition: .15s;
+  }
+  .syw .syw-copybib .ico { width: .85rem; height: .85rem; fill: currentColor; }
+  .syw .syw-copybib:hover { color: var(--ground); background: var(--ink); border-color: var(--ink); }
+  .syw .syw-copybib.done { color: var(--accent); border-color: var(--accent); }
+  .syw .syw-copybib--sm { margin-left: .4rem; padding: .05rem .45rem; font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; vertical-align: .1em; }
+  .syw .syw-copybib--sm .ico { width: .7rem; height: .7rem; }
+  .syw .syw-software li { margin-bottom: .6rem; }
+  /* Info's Reproduce line (the showyourwork button) and its Funding cards. */
+  .syw .syw-reproduce { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+  .syw .syw-reproduce p { flex: 1 1 22rem; margin: 0; }
+  .syw .syw-funders { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); padding: 0; list-style: none; }
+  .syw .syw-funder { padding: .8rem 1rem; border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 10px; background: var(--surface); }
+  .syw .syw-funder strong { display: block; font-size: 1.02rem; line-height: 1.3; }
+  .syw .syw-funder .award { display: block; margin-top: .25rem; font-size: .9rem; }
+  .syw .syw-funder .num { white-space: nowrap; font-family: var(--mono); font-size: .75rem; color: var(--ink-mute); }
+  .syw .syw-funder .who { display: block; margin-top: .4rem; font-size: .8rem; color: var(--ink-mute); }
+</style>

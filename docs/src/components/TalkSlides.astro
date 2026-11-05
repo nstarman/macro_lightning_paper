@@ -1,0 +1,25 @@
+---
+// A few slides from the 2026 journal-club talk on macroscopic dark matter, stepped through in place:
+// <TalkSlides slides={["forming-plasma-channels", "forming-plasma-channels-1"]}>Caption.</TalkSlides>.
+// The deck is the talk's lightning section, cut by the talk's scripts/explainers.py into
+// public/talk/lightning.html (one offline file, no speaker notes); `?only=` keeps just these slides, by
+// id, so the reader steps through them and no further. Not syw-site's: upgrades leave it alone.
+import { url } from '../lib/facts.js';
+
+const { slides } = Astro.props;
+const deck = url(`talk/lightning.html?only=${slides.join(',')}`);
+---
+<figure class="syw-webapp syw-talk">
+  <iframe src={deck} title={`Slides: ${slides[0]}`} loading="lazy" allowfullscreen></iframe>
+  <figcaption>
+    <slot />
+    <div class="fig-links">
+      <span>Click the slide, then step with the arrow keys.</span>
+      <span><a href={deck}>Open</a></span>
+    </div>
+  </figcaption>
+</figure>
+
+<style>
+  .syw-talk iframe { width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; }
+</style>

@@ -1,0 +1,15 @@
+---
+import { facts } from '../lib/facts.js';
+---
+<p class="syw-authors">
+  {facts.authors.map((a, i) => (
+    <>
+      {i > 0 && ', '}
+      {a.orcid ? <a href={`https://orcid.org/${a.orcid}`}>{a.name}</a> : a.name}
+      <sup>{a.affiliations.map((k) => k + 1).join(',')}</sup>
+    </>
+  ))}
+</p>
+<ol class="syw-affiliations">
+  {facts.affiliations.map((aff) => <li>{aff}</li>)}
+</ol>

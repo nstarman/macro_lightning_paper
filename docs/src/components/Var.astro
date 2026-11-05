@@ -1,0 +1,9 @@
+---
+// A number from the paper, as the PDF prints it: <Var name="forecast/angular_gain" />, where the
+// name is the \variable{output/<name>.tex} path.
+import { variable } from '../lib/facts.js';
+import { value } from '../lib/tex.js';
+
+const { name } = Astro.props;
+---
+<span class="syw-var" set:html={value(variable(name))} />
