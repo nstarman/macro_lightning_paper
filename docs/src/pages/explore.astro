@@ -1,0 +1,16 @@
+---
+// Interactive figures that are not in the paper: the webapps syw-site.yml marks `explore: true`.
+import Page from '../components/Page.astro';
+import Webapp from '../components/Webapp.astro';
+import { tex } from '../lib/tex.js';
+import { exploreApps } from '../lib/tabs.js';
+---
+<Page tab="explore">
+  {exploreApps().map((w) => (
+    <section class="syw-explore">
+      {w.title && <h3>{w.title}</h3>}
+      {w.text && <p set:html={tex(w.text)} />}
+      <Webapp name={w.name} />
+    </section>
+  ))}
+</Page>

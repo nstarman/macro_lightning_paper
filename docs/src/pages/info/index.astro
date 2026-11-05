@@ -1,0 +1,37 @@
+---
+// How to reproduce the paper (its showyourwork repository), who wrote it and where (the website's
+// collaborator map, for this paper's co-authors), what funded it, and the author's own pages in info/.
+import Page from '../../components/Page.astro';
+import CollabMap from '@nstarkman/research-kit/CollabMap.astro';
+import { facts, url } from '../../lib/facts.js';
+import { funding, hasMap, infoLinks } from '../../lib/tabs.js';
+---
+<Page tab="info">
+  <section class="syw-repro">
+    <h3>Reproduce this paper</h3>
+    <div class="syw-reproduce">
+      <p>The paper is built with <a href="https://show-your.work">showyourwork</a>: one command reruns the analysis
+        and remakes every figure and number from its code and data. Click the button for the repository.</p>
+      <a class="syw-linkbtn" href={`https://github.com/${facts.repo}`}><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-syw" /></svg>Code and data</a>
+    </div>
+  </section>
+  {hasMap() && <section class="syw-collaborators"><h3>Collaborators</h3><CollabMap /></section>}
+  {funding().length > 0 && (
+    <section class="syw-funding">
+      <h3>Funding</h3>
+      <p>This work was supported by</p>
+      <ul class="syw-funders">
+        {funding().map((g) => (
+          <li class="syw-funder">
+            <strong>{g.funder}</strong>
+            <span class="award">{g.award}{g.number && <> <span class="num">{g.number}</span></>}</span>
+            {g.who && <span class="who">{g.who}</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+  {infoLinks().length > 0 && (
+    <section class="syw-more"><h3>More</h3><ul>{infoLinks().map((p) => <li><a href={url(p)}>{p.replace(/^info\/|\/$/g, '').replace(/-/g, ' ')}</a></li>)}</ul></section>
+  )}
+</Page>

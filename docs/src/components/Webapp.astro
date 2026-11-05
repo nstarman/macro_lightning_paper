@@ -1,0 +1,48 @@
+---
+// An interactive figure (a figpress-apps app listed in docs/syw-site.yml): <Webapp name="globe" />, with its
+// caption, if any, as the content: <Webapp name="globe">Caption.</Webapp>. `links={false}` leaves out
+// its row of links (a figure page whose webapp replaces the image puts them in the figure's row).
+// `full="explore/"` adds Full, a link to a fuller version of the app elsewhere on the site.
+import { url, webapp } from '../lib/facts.js';
+
+const { name, height = 640, links = true, full } = Astro.props;
+webapp(name);
+const site = url(`generated/webapps/${name}/site/`);
+---
+<figure class="syw-webapp">
+  {/* `height` until the app loads; then the frame follows the app's own height (same origin). */}
+  <iframe src={site} title={`Interactive figure: ${name}`} height={height} loading="lazy" data-fit></iframe>
+  <figcaption>
+    <slot />
+    {/* As under a paper figure: the page on the left, the download on the right. */}
+    {links && (
+      <div class="fig-links">
+        <span><a href={site}>Open</a>{full && <> · <a href={url(full)}>Full</a></>}</span>
+        <span>Download <a href={url(`generated/webapps/${name}/${name}.html`)} download>HTML</a></span>
+      </div>
+    )}
+  </figcaption>
+</figure>
+
+<script>
+  // Size each app's frame to its content, and again whenever its layout changes (a narrower page
+  // stacks the panels under the globe). The frame follows the site's theme toggle: the page's
+  // `data-theme` (unset: the system's) is copied onto the app's document, as it changes.
+  const root = document.documentElement;
+  for (const frame of document.querySelectorAll<HTMLIFrameElement>('iframe[data-fit]')) {
+    frame.addEventListener('load', () => {
+      const doc = frame.contentDocument;
+      if (!doc?.body) return;
+      const body = doc.body;
+      const fit = () => { frame.style.height = `${Math.ceil(body.getBoundingClientRect().height)}px`; };
+      new ResizeObserver(fit).observe(body);
+      fit();
+      const theme = () => {
+        if (root.dataset.theme) doc.documentElement.dataset.theme = root.dataset.theme;
+        else delete doc.documentElement.dataset.theme;
+      };
+      new MutationObserver(theme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+      theme();
+    });
+  }
+</script>

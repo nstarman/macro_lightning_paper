@@ -1,0 +1,39 @@
+---
+// A figure of the paper with its caption: <Fig label="fig:quadrupole" />. `link` adds Open, a link to
+// its own page (which also shows its interactive version, where a webapp names it). A webapp with
+// `replaces: true` stands in for the image wherever the figure is shown, and its HTML joins the
+// downloads.
+import Webapp from './Webapp.astro';
+import { facts, figure, url } from '../lib/facts.js';
+import { tex } from '../lib/tex.js';
+
+const { label, link = true } = Astro.props;
+const fig = figure(label);
+const app = Object.entries(facts.webapps ?? {}).find(([, w]) => w.replaces && w.figure === fig.label)?.[0];
+const number = facts.figures.indexOf(fig) + 1;
+const refs = Object.fromEntries(facts.figures.map((f, i) => [f.label, String(i + 1)]));
+const alt = `Paper Figure ${number}: ${fig.caption.replace(/\$[^$]*\$|\\[A-Za-z]+|[{}]/g, '').slice(0, 200)}`;
+---
+{app && <Webapp name={app} links={false} />}
+<figure id={fig.slug}>
+  {!app && fig.images.map((im) => (
+    <img src={url(`generated/figures/${im.webp ?? im.png ?? im.file}`)} alt={alt} loading="lazy" />
+  ))}
+  <figcaption>
+    <strong>Paper Figure {number}.</strong> <span set:html={tex(fig.caption, refs)} />
+    {/* The links on a line of their own, under the caption: pages on the left, downloads on the right. */}
+    <div class="fig-links">
+      <span>
+        {link && <a href={url(`figures/${fig.slug}/`)}>Open</a>}
+      </span>
+      <span>
+        {/* "Download HTML · PDF · PNG": the word once, each format its own link. */}
+        {[
+          ...(app ? [<a href={url(`generated/webapps/${app}/${app}.html`)} download>HTML</a>] : []),
+          ...fig.images.filter((im) => im.file.endsWith('.pdf')).map((im) => <a href={url(`generated/figures/${im.file}`)}>PDF</a>),
+          ...fig.images.filter((im) => im.png).map((im) => <a href={url(`generated/figures/${im.png}`)} download>PNG</a>),
+        ].map((a, i) => <>{i > 0 ? ' · ' : 'Download '}{a}</>)}
+      </span>
+    </div>
+  </figcaption>
+</figure>

@@ -1,0 +1,90 @@
+name: Docs site
+
+# Builds the paper's docs site (syw-site 2026.11.04) on every push and pull request, and publishes
+# it to nstarkman.space/macro_lightning_paper/ only when docs/syw-site.yml says `publish: true` — set that at
+# arXiv submission, with the repository public and Pages set to "GitHub Actions". Until then
+# nothing is published: a private repository uploads a collaborator-only `docs-site` workflow
+# artifact (14 days) for `syw-site preview <PR>`, and no Pages artifact is uploaded.
+#
+# The environment below installs showyourwork and syw-site with pip; adapt it to how this paper
+# runs showyourwork (extra flags after `--`). A paper whose rules use the Zenodo cache needs its
+# SANDBOX_TOKEN secret, or the build stalls; OVERLEAF_TOKEN is deliberately not passed, so a docs
+# build never syncs with Overleaf.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # a build waiting on the Zenodo cache never ends on its own
+    outputs:
+      publish: ${{ steps.settings.outputs.publish }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # showyourwork reads the repository's git history
+          submodules: recursive  # e.g. a LaTeX preamble kept as a submodule
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install showyourwork and syw-site
+        run: pip install "showyourwork @ git+https://github.com/showyourwork/showyourwork@44d15103f64c3162e4a1a961f49f77d8e3634e49" "syw-site @ git+https://github.com/nstarman/syw-site@v2026.11.04"
+      - name: Build the paper and its docs site
+        env:
+          SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
+        run: syw-site build --cores 2
+      - name: Read the publish setting
+        id: settings
+        run: |
+          python -c "import yaml; print('publish=' + str(bool(yaml.safe_load(open('docs/syw-site.yml'))['publish'])).lower())" >> "$GITHUB_OUTPUT"
+      - name: Refuse to publish from a private repository
+        if: steps.settings.outputs.publish == 'true' && github.event.repository.private
+        run: |
+          echo "::error::docs/syw-site.yml says publish: true, but this repository is private. Make it public at arXiv submission, or set publish: false."
+          exit 1
+      - name: Upload the site for Pages
+        if: steps.settings.outputs.publish == 'true' && !github.event.repository.private && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/dist
+
+      - name: Upload a private preview
+        # A private repository's artifacts are visible only to its collaborators: fetch one with
+        # `syw-site preview <PR>`. In a public repository this would be public, so it never runs.
+        if: github.event.repository.private && steps.settings.outputs.publish != 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: docs-site
+          path: docs/dist
+          retention-days: 14
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.publish == 'true' && !github.event.repository.private && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

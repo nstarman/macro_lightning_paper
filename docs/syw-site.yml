@@ -1,0 +1,16 @@
+# The docs site's settings (syw-site). See the syw-site skill's references/settings.md.
+repo: nstarman/macro_lightning_paper
+# The paper's record id on nstarkman.space, for its card (/embed/<id>/).
+website_id: macro-lightning
+# Nothing is deployed until this is true — set it at arXiv submission, with the repo public.
+publish: true  # published in PRD (2021) and public since
+# Filled in when known.
+paper:
+  arxiv: "2006.16272"
+  doi: 10.1103/PhysRevD.103.063024
+  bibcode: 2021PhRvD.103f3024S
+# How this paper runs Python, if not plain `python` (e.g. `uv run --locked python`).
+# python: python
+# Interactive figures (figpress-apps apps in webapps/<name>/), each with the data files it reads.
+# webapps:
+#   globe: { inputs: [src/data/example.npz], figure: fig:example }

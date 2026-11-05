@@ -1,0 +1,28 @@
+---
+// The Figures tab: a gallery. Each card is a figure's image, its number and its caption's short
+// title, marked Interactive where a webapp names it, and opens the figure's page (the image or its
+// interactive version, the whole caption and the downloads).
+import Page from '../../components/Page.astro';
+import { facts, url } from '../../lib/facts.js';
+import { short, tex } from '../../lib/tex.js';
+
+const refs = Object.fromEntries(facts.figures.map((f, i) => [f.label, String(i + 1)]));
+const interactive = (f) => Object.values(facts.webapps ?? {}).some((w) => w.figure && (w.figure === f.label || w.figure === f.slug));
+---
+<Page tab="figures">
+  <div class="syw-gallery">
+    {facts.figures.map((f, i) => {
+      const im = f.images[0];
+      return (
+        <a class="syw-gallery-item" id={f.slug} href={url(`figures/${f.slug}/`)}>
+          <img src={url(`generated/figures/${im.thumb ?? im.webp ?? im.png ?? im.file}`)} alt="" loading="lazy" />
+          <span class="syw-gallery-head">
+            <strong>Paper Figure {i + 1}</strong>
+            {interactive(f) && <span class="syw-badge">Interactive</span>}
+          </span>
+          <span class="syw-gallery-title" set:html={tex(short(f.caption), refs)} />
+        </a>
+      );
+    })}
+  </div>
+</Page>

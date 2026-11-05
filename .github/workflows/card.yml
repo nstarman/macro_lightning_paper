@@ -1,0 +1,41 @@
+name: Card
+
+# Keeps docs/card.json — what nstarkman.space knows about this paper (its record, what its
+# refs reach, its co-authors' places), the images the card draws and the author's portrait —
+# current: weekly, or by hand (Actions → Card → Run workflow). Opens a pull request when it
+# changed. It never builds or deploys the site.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"  # Mondays
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  card:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Fetch the card
+        working-directory: docs
+        run: |
+          npm ci
+          id=$(node -e "const s=require('fs').readFileSync('syw-site.yml','utf8'); const m=s.match(/^website_id:[ \t]*(\S+)/m); if (!m) process.exit(1); console.log(m[1])") \
+            || { echo "::error::docs/syw-site.yml has no website_id"; exit 1; }
+          node scripts/card.mjs "$id"
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: syw-site/card
+          title: "Refresh the card from nstarkman.space"
+          commit-message: "Refresh the card from nstarkman.space"
+          body: "`syw-site card`: the paper's record and what it reaches on nstarkman.space changed (docs/card.json, the card's images, the portrait)."
+          add-paths: |
+            docs/card.json
+            docs/public/card
+            docs/portrait.jpg

@@ -1,0 +1,442 @@
+{
+  "schema": 1,
+  "root": "macro-lightning",
+  "source": {
+    "repo": "nstarman/nstarman.github.io",
+    "ref": "main",
+    "sha": "a6abd1a9af6957e6d1ed42becf345ab74d76d213"
+  },
+  "items": [
+    {
+      "id": "macro-lightning",
+      "type": "publication",
+      "cvs": [
+        "np"
+      ],
+      "date": {
+        "start": "2020-06"
+      },
+      "title": "Straight Lightning as a Signature of Macroscopic Dark Matter",
+      "shortTitle": "Straight Lightning from Macroscopic Dark Matter",
+      "nickTitle": "Macro Lightning",
+      "status": "published",
+      "entryType": "article",
+      "refereed": "journal",
+      "authors": [
+        {
+          "family": "Starkman",
+          "given": "Nathaniel",
+          "me": true,
+          "orcid": "0000-0003-3954-3291"
+        },
+        {
+          "family": "Winch",
+          "given": "Harrison",
+          "orcid": "0000-0002-0092-6271",
+          "affiliation": "David A. Dunlap Department of Astronomy and Astrophysics / Dunlap Institute, University of Toronto, Toronto, Ontario M5S, Canada"
+        },
+        {
+          "family": "Sidhu",
+          "given": "Jagjit Singh",
+          "orcid": "0000-0002-1956-1305",
+          "affiliation": "Physics Department/CERCA/ISO, Case Western Reserve University, Cleveland, Ohio 44106-7079, USA"
+        },
+        {
+          "family": "Starkman",
+          "given": "Glenn",
+          "orcid": "0000-0002-5053-1542",
+          "affiliation": "Physics Department/CERCA/ISO, Case Western Reserve University, Cleveland, Ohio 44106-7079, USA"
+        }
+      ],
+      "funding": [
+        {
+          "funder": "United States Department of Energy",
+          "number": "DE-SC0009946"
+        },
+        {
+          "funder": "Natural Sciences and Engineering Research Council of Canada",
+          "award": "Canada Graduate Scholarship – Master's",
+          "number": "542364 / 2019",
+          "recipients": [
+            "Starkman"
+          ],
+          "grant": "nserc-cgs-m"
+        },
+        {
+          "funder": "Natural Sciences and Engineering Research Council of Canada",
+          "award": "Canada Graduate Scholarship – Master's",
+          "number": "542579 / 2019",
+          "recipients": [
+            "Winch"
+          ]
+        },
+        {
+          "funder": "Government of Ontario",
+          "award": "Early Researcher Award",
+          "number": "ER16-12-061"
+        }
+      ],
+      "venue": {
+        "journal": "Physical Review D",
+        "volume": "103",
+        "pages": "063024",
+        "year": "2021",
+        "month": "03"
+      },
+      "doi": "10.1103/PhysRevD.103.063024",
+      "links": [
+        {
+          "rel": "paper",
+          "url": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.103.063024"
+        },
+        {
+          "rel": "code",
+          "url": "https://pypi.org/project/macro-lightning/"
+        },
+        {
+          "rel": "docs",
+          "url": "https://macro-lightning.readthedocs.io/en/latest/"
+        },
+        {
+          "rel": "data",
+          "url": "https://zenodo.org/record/4558581"
+        }
+      ],
+      "refs": [
+        "macro-lightning-code"
+      ],
+      "tags": [
+        "dark-matter"
+      ],
+      "arxiv": "2006.16272",
+      "primaryClass": "astro-ph.CO",
+      "abstract": "Macroscopic dark matter (macros) is a broad class of alternative candidates to particle dark matter. These candidates would transfer energy to matter primarily through elastic scattering. A sufficiently large macro passing through the atmosphere would produce a straight channel of ionized plasma. If the cross-section of the macro is $\\sigma_x \\gtrapprox 6 \\times 10^{-9}~{\\rm cm}^2$, then under atmospheric conditions conducive to lightning (eg. a thunderstorm) the plasma channel would be sufficient to seed a lightning strike with a single leader. This is entirely unlike ordinary bolt lightning in which a long sequence of hundreds or thousands of few-meter-long leaders are strung together. This macro-induced lightning would be extremely straight, and thus highly distinctive. Neither wind shear nor magnetohydrodynamic instabilities would markedly spoil its straightness. The only photographically documented case of a straight lightning bolt is probably not straight enough to have been macro-induced. We estimate the region of macro parameter space that could be probed by a search for straight lightning from the number of thunderstorms happening on Earth at any time. We also estimate the parameter space that can be probed by carefully monitoring Jupiter, e.g. using the Hubble Space Telescope. All code and data is available at https://github.com/cwru-pat/macro_lightning.",
+      "highlight": {
+        "topic": "dm-direct-detection",
+        "image": "highlights/macro-lightning.webp",
+        "alt": "Macro dark matter parameter space, cross-section against mass, both on log axes. Colored regions are existing constraints; black and grey hatching marks what a search for straight lightning on Earth could probe, and cyan hatching what Jupiter could, reaching to heavier macros than the Earth search.",
+        "description": "If dark matter comes as large objects — macros — rather than tiny particles, a macro crossing a thunderstorm could trigger a perfectly straight lightning bolt. Ordinary lightning is jagged, so searching for straight bolts, on Earth or on Jupiter, can constrain macro dark matter."
+      },
+      "bibcode": "2021PhRvD.103f3024S",
+      "citations": 9
+    },
+    {
+      "id": "macro-lightning-code",
+      "type": "software",
+      "cvs": [],
+      "date": {
+        "start": "2019-08"
+      },
+      "title": "macro_lightning",
+      "summary": "Constrain macroscopic dark matter with lightning",
+      "details": "Constraints on macroscopic dark matter from lightning, on Earth and Jupiter. Released with the PRD paper.",
+      "highlight": {
+        "topic": "software",
+        "image": "highlights/macro-lightning-code.webp",
+        "source": {
+          "repo": "nstarman/macro_lightning",
+          "path": "docs/_static/favicon.png",
+          "sha": "543c6ddc350bc7c156d0fa9a93c47b4c93ff00eb"
+        },
+        "alt": "The macro_lightning logo: a dotted track through a cloud, ending below it in a black macro trailing a blue wake inside a yellow channel.",
+        "description": "Constraints on macroscopic dark matter from the lightning it would trigger, on Earth and on Jupiter, released with the paper."
+      },
+      "repo": "nstarman/macro_lightning",
+      "role": "lead developer",
+      "links": [
+        {
+          "rel": "code",
+          "url": "https://pypi.org/project/macro-lightning/"
+        },
+        {
+          "rel": "docs",
+          "url": "https://macro-lightning.readthedocs.io/en/latest/"
+        },
+        {
+          "rel": "data",
+          "url": "https://zenodo.org/record/4558581"
+        }
+      ],
+      "refs": [
+        "macro-lightning"
+      ],
+      "tags": [
+        "dark-matter"
+      ],
+      "tier": "minor",
+      "group": "dark-matter"
+    }
+  ],
+  "config": {
+    "collaborators": {
+      "$comment": "Generated by scripts/collect-collaborators.mjs from public ORCID employment records. Do not edit by hand — run the script. An empty `affiliations` means that person lists no employment on ORCID, not that they have none.",
+      "source": "https://orcid.org",
+      "people": [
+        {
+          "orcid": "0000-0002-5053-1542",
+          "name": "Glenn Starkman",
+          "affiliations": [
+            {
+              "organization": "Case Western Reserve University",
+              "city": "Cleveland",
+              "region": "OH",
+              "country": "US",
+              "role": "Distinguished University Professor",
+              "kind": "employment",
+              "start": "1995-01",
+              "end": null
+            },
+            {
+              "organization": "Canadian Institute for Advanced Research",
+              "city": "Toronto",
+              "region": "ON",
+              "country": "CA",
+              "role": "Scholar",
+              "kind": "employment",
+              "start": "1994-01",
+              "end": "1994-12"
+            },
+            {
+              "organization": "Canadian Institute for Theoretical Astrophysics",
+              "city": "Toronto",
+              "region": "Ontario",
+              "country": "CA",
+              "role": "Research Associate",
+              "kind": "employment",
+              "start": "1991-07",
+              "end": "1994-12"
+            },
+            {
+              "organization": "Institute for Advanced Study",
+              "city": "Princeton",
+              "region": "NJ",
+              "country": "US",
+              "role": "Member",
+              "kind": "employment",
+              "start": "1988-07",
+              "end": "1991-06"
+            },
+            {
+              "organization": "Stanford University",
+              "city": "Palo Alto",
+              "region": "CA",
+              "country": "US",
+              "role": "PhD",
+              "kind": "education",
+              "start": "1984-09",
+              "end": "1988-06"
+            },
+            {
+              "organization": "University of Toronto",
+              "city": "Toronto",
+              "region": "ON",
+              "country": "CA",
+              "role": "BSc",
+              "kind": "education",
+              "start": "1980-09",
+              "end": "1984-06"
+            }
+          ]
+        },
+        {
+          "orcid": "0000-0002-0092-6271",
+          "name": "Harrison Winch",
+          "affiliations": [
+            {
+              "organization": "University of Toronto",
+              "city": "Toronto",
+              "region": "ON",
+              "country": "CA",
+              "role": "Assistant Professor, Teaching Stream (Limited Term Appointment)",
+              "kind": "employment",
+              "start": "2024-07",
+              "end": "2025-06"
+            },
+            {
+              "organization": "University of Toronto",
+              "city": "Toronto",
+              "region": "ON",
+              "country": "CA",
+              "role": "Doctor of Philosophy",
+              "kind": "education",
+              "start": "2018-09",
+              "end": "2024-07"
+            }
+          ]
+        },
+        {
+          "orcid": "0000-0002-1956-1305",
+          "name": "Jagjit Singh Sidhu",
+          "affiliations": []
+        },
+        {
+          "orcid": "0000-0003-3954-3291",
+          "name": "Nathaniel Starkman",
+          "me": true,
+          "affiliations": [
+            {
+              "organization": "MIT",
+              "city": "Cambridge",
+              "region": null,
+              "country": "US",
+              "role": "Postdoctoral Fellow",
+              "kind": "employment",
+              "start": "2024-10",
+              "end": null
+            },
+            {
+              "organization": "Case Western Reserve University",
+              "city": "Cleveland",
+              "region": "OH",
+              "country": "US",
+              "role": "Visiting Researcher",
+              "kind": "employment",
+              "start": "2024",
+              "end": "2027"
+            },
+            {
+              "organization": "University of Toronto",
+              "city": "Toronto",
+              "region": "ON",
+              "country": "CA",
+              "role": "PhD Candidate",
+              "kind": "employment",
+              "start": "2018-09",
+              "end": "2024-08"
+            },
+            {
+              "organization": "University of Toronto",
+              "city": "Toronto",
+              "region": "ON",
+              "country": "CA",
+              "role": "PhD",
+              "kind": "education",
+              "start": "2018-09",
+              "end": "2024-09"
+            },
+            {
+              "organization": "Case Western Reserve University",
+              "city": "Cleveland",
+              "region": "OH",
+              "country": "US",
+              "role": "Associate Researcher",
+              "kind": "employment",
+              "start": "2017-05",
+              "end": "2018-05"
+            },
+            {
+              "organization": "CLASSE REU",
+              "city": "Ithaca",
+              "region": "New York",
+              "country": "US",
+              "role": "REU research associate",
+              "kind": "employment",
+              "start": "2016-05",
+              "end": "2016-08"
+            },
+            {
+              "organization": "Prof. John Ruhl, South Pole Telescope",
+              "city": "Cleveland",
+              "region": "Ohio",
+              "country": "US",
+              "role": "Associate Researcher",
+              "kind": "employment",
+              "start": "2015-05",
+              "end": "2015-08"
+            },
+            {
+              "organization": "Case Western Reserve University",
+              "city": "Cleveland",
+              "region": "OH",
+              "country": "US",
+              "role": "Bachelor of Science",
+              "kind": "education",
+              "start": "2014-08",
+              "end": "2018-05"
+            },
+            {
+              "organization": "European Organization for Nuclear Research",
+              "city": "Geneve",
+              "region": "Genève",
+              "country": "CH",
+              "role": "outreach assistant",
+              "kind": "employment",
+              "start": "2012-08",
+              "end": "2013-08"
+            }
+          ]
+        }
+      ]
+    },
+    "journals": {
+      "Physical Review D": "PRD"
+    },
+    "stars": {
+      "$comment": "Generated by scripts/collect-stars.mjs. Do not edit by hand.",
+      "stars": {
+        "nstarman/macro_lightning": 3
+      }
+    },
+    "places": {
+      "$comment": "Coordinates for every place the site pins — collaborator institutions and presentation locations alike — resolved once with scripts/geocode-places.mjs and committed so the site and CI never call a geocoder. `matched` is what the geocoder thought it found — check it before trusting a pin. Safe to correct by hand: the script only fills in what is missing. A name that is the same campus as another is `{ \"sameAs\": \"<other name>\" }` rather than a second copy of the coordinates; read places through packages/data-resolver/src/places.js. Keep one entry per campus: tests/places.test.js fails on two entries with the same coordinates.",
+      "source": "https://nominatim.openstreetmap.org (ODbL)",
+      "places": {
+        "Canadian Institute for Advanced Research": {
+          "lat": 43.6596,
+          "lon": -79.3896,
+          "matched": "hand-placed: MaRS Centre, 661 University Ave, Toronto"
+        },
+        "Canadian Institute for Theoretical Astrophysics": {
+          "sameAs": "University of Toronto"
+        },
+        "Case Western Reserve University": {
+          "lat": 41.5014,
+          "lon": -81.6007,
+          "matched": "Case Western Reserve University, 10900, Euclid Avenue, Little Italy, Cleveland, Cuyahoga County, Ohio, 44106, United States"
+        },
+        "CLASSE REU": {
+          "lat": 42.4534,
+          "lon": -76.4735,
+          "matched": "Set by hand: Cornell Laboratory for Accelerator-based Sciences and Education, Cornell University, Ithaca, New York, United States"
+        },
+        "European Organization for Nuclear Research": {
+          "lat": 46.2338,
+          "lon": 6.0532,
+          "matched": "Set by hand: CERN, Meyrin site, Route de Meyrin, Meyrin, Geneva, Switzerland"
+        },
+        "Institute for Advanced Study": {
+          "lat": 40.3323,
+          "lon": -74.6658,
+          "matched": "Institute for Advanced Study, Trolley Track Trail, Battlefield Area, Princeton, Mercer County, New Jersey, 08544, United States"
+        },
+        "MIT": {
+          "sameAs": "Massachusetts Institute of Technology"
+        },
+        "Prof. John Ruhl, South Pole Telescope": {
+          "sameAs": "Case Western Reserve University"
+        },
+        "Stanford University": {
+          "lat": 37.4352,
+          "lon": -122.1746,
+          "matched": "Stanford University Hospital Center Heliport, Quarry Road Extension, Palo Alto, Santa Clara County, California, 94305, United States"
+        },
+        "University of Toronto": {
+          "lat": 43.6635,
+          "lon": -79.3968,
+          "matched": "University of Toronto St. George, McCaul Street, University, Downtown, Toronto, Golden Horseshoe, Ontario, M5T 1P7, Canada"
+        },
+        "Massachusetts Institute of Technology": {
+          "lat": 42.3583,
+          "lon": -71.0966,
+          "matched": "Massachusetts Institute of Technology, Ed Walsh's Way, East Cambridge, Cambridge, Middlesex County, Massachusetts, 02142, United States"
+        }
+      }
+    },
+    "acknowledgements": {
+      "papers": []
+    }
+  },
+  "card": {
+    "preset": "paperSite"
+  }
+}
