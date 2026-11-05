@@ -89,6 +89,10 @@ function prose(s) {
  * ("(Appendix~\ref{app:x})" reads "(Appendix)"), \autoref/\cref to "the paper" ("(\cref{app:x})"
  * reads "(see the paper)"). */
 export function tex(s, refs = {}) {
+  // The site shows no equations, so an equation reference points into the paper
+  // ("…where macros satisfy \eqref{eq:x}" reads "…satisfy an equation in the paper").
+  s = s.replace(/\(\s*~?\\eqref\{[^}]*\}\s*\)/g, '(the paper)')
+    .replace(/(\b(?:Eqs?\.|Equations?)\s*)?(~?)\\eqref\{[^}]*\}/g, (_, word, tie) => `${tie && !word ? ' ' : ''}an equation in the paper`);
   s = s.replace(/(~?)\\(auto|c|C)?ref\{([^}]*)\}/g, (_, tie, kind, l) => (
     l in refs ? tie + (kind ? 'Figure~' : '') + refs[l] : kind ? `${tie}the paper` : ''));
   s = s.replace(/(^\s*|[.!?]\s+)the paper/g, '$1The paper');
