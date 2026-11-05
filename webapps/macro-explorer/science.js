@@ -2,7 +2,7 @@
 // Grids are row-major (n_sigma, n_mass): element [i, j] is sigma index i, mass index j.
 
 /**
- * Projected straight-lightning f_DM (Starkman+2021 recast; scripts/lightning.py) on one planet:
+ * Projected straight-lightning f_DM (Starkman+2021 recast; src/scripts/lightning.py) on one planet:
  * f = n_obs / N_exp, N_exp = eff * (rho/m) * pi R^2 f_TS * T * <v; sigma>, only for sigma/m <= max.
  * `p` holds the shared constants, `planet` its radius `r` [cm] and thunderstorm fraction `f_ts`.
  * Unconstrained cells are Infinity.
