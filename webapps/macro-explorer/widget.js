@@ -76,7 +76,7 @@ export default {
       return c;
     };
     const row = (input, text, key, sw) => {
-      const r = el_("label", { style: "display:block; cursor:pointer" });
+      const r = el_("label", { style: "display:block; cursor:pointer; break-inside:avoid; white-space:nowrap" });
       if (input) r.append(input); else r.style.paddingLeft = "20px";
       if (sw) r.append(sw);
       r.append(" " + text);
@@ -84,26 +84,40 @@ export default {
       r.onpointerleave = () => { hot = null; stage.requestDraw(); };
       return r;
     };
+    // The constraints, the long group, flow into as many columns as fit; Projected and Reference stack
+    // in a column beside them when there is room, and drop below when there is not.
+    list.style.cssText = "display:flex; flex-wrap:wrap; gap:10px 24px; align-content:start";
+    const side = el_("div", { style: "flex:1 1 12em; min-width:0; display:flex; flex-direction:column; gap:10px" });
+    const group = (title, parent) => {
+      const g = el_("div", { style: parent === list ? "flex:3 1 20em; min-width:0" : "" });
+      g.append(el_("div", { className: "fk-panel-head", textContent: title }));
+      parent.append(g);
+      return g;
+    };
     const boxes = {};
-    list.append(el_("div", { className: "fk-panel-head", textContent: "Constraints (Picker+2026)" }));
+    const gCons = group("Constraints (Picker+2026)", list);
+    list.append(side);
+    const cols = el_("div", { style: "columns:9em; column-gap:20px" });
     for (const c of meta.constraints) {
       const cb = el_("input", { type: "checkbox", checked: model.get("enabled")[c.key] });
       cb.onchange = () => { model.set("enabled", { ...model.get("enabled"), [c.key]: cb.checked }); model.save_changes(); };
       boxes[c.key] = cb;
-      list.append(row(cb, c.label, c.key));
+      cols.append(row(cb, c.label, c.key));
     }
     const allOn = el_("button", { textContent: "All" }), allOff = el_("button", { textContent: "None" });
     allOn.onclick = () => setAll(true); allOff.onclick = () => setAll(false);
-    list.append(allOn, " ", allOff);
-    list.append(el_("div", { className: "fk-panel-head", textContent: "Projected (Starkman+2021)", style: "margin-top:10px" }));
+    const buttons = el_("div", { style: "margin-top:6px" });
+    buttons.append(allOn, " ", allOff);
+    gCons.append(cols, buttons);
+    const gProj = group("Projected (Starkman+2021)", side);
     const pboxes = {};
     for (const p of PLANETS) {
       const cb = el_("input", { type: "checkbox", checked: model.get("lightning")[p.id] });
       cb.onchange = () => { setLightning({ [p.id]: cb.checked }); model.save_changes(); };
       pboxes[p.id] = cb;
-      list.append(row(cb, p.label, p.id, swatch("hatch", p.color, p.dir)));
+      gProj.append(row(cb, p.label, p.id, swatch("hatch", p.color, p.dir)));
     }
-    list.append(el_("div", { className: "fk-panel-head", textContent: "Reference", style: "margin-top:10px" }));
+    const gRefs = group("Reference", side);
     const rboxes = {};
     const refRow = (id, text, sw) => {
       const cb = el_("input", { type: "checkbox", checked: model.get("refs")[id] });
@@ -111,8 +125,8 @@ export default {
       rboxes[id] = cb;
       return row(cb, text, null, sw);
     };
-    for (const r of REF_LINES) list.append(refRow(r.label.toLowerCase(), `${r.label} density`, swatch("line", r.color, r.dash)));
-    list.append(refRow("bh", "Black holes", swatch("box", "#111")));
+    for (const r of REF_LINES) gRefs.append(refRow(r.label.toLowerCase(), `${r.label} density`, swatch("line", r.color, r.dash)));
+    gRefs.append(refRow("bh", "Black holes", swatch("box", "#111")));
     split.append(panel, list);
     el.replaceChildren(toolbar, split);
 
