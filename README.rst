@@ -29,6 +29,23 @@ carefully monitoring Jupiter, e.g. using a Jupiter probe.
 All code and data is available at https://github.com/cwru-pat/macro_lightning.
 
 
+Building the paper and its site
+-------------------------------
+
+The paper is a `showyourwork <https://github.com/showyourwork/showyourwork>`_ repository
+(``src/tex/ms.tex``; the published figures are in ``src/static/``), with a docs site made by
+`syw-site <https://github.com/nstarman/syw-site>`_ in ``docs/``, published at
+https://nstarkman.space/macro_lightning_paper/.
+
+.. code-block:: bash
+
+    showyourwork build          # the paper, ms.pdf
+    syw-site build && syw-site serve
+
+On Apple Silicon add ``--scheduler greedy`` (``syw-site build -- --scheduler greedy``): Snakemake's
+default scheduler calls an Intel-only solver. ``v1/`` and ``v2/`` hold the arXiv versions as published.
+
+
 Attribution
 -----------
 
