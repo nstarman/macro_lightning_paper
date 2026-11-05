@@ -1,5 +1,5 @@
-// Run after export.py: uv run figpress-apps test webapps/macro_explorer
-// Checks the JS lightning recast against scripts/lightning.py (exported as check_lightning_<planet>).
+// Run after a site build: APP_DATA=docs/.syw-site/webapps/macro-explorer/data/ figpress-apps test webapps/macro-explorer
+// Checks the JS lightning recast against src/scripts/lightning.py (exported as check_lightning_<planet>).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";

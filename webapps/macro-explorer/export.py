@@ -1,6 +1,6 @@
 """Export the macro-constraint explorer's dataset.
 
-    python webapps/macro_explorer/export.py --out <dir>
+    python webapps/macro-explorer/export.py --out <dir>
 
 Grids are the macrolimits f_DM maps (Picker+2026) from src/static/constraint_grids.npz, downsampled
 4x in each axis. Straight lightning is recomputed in the browser from <v_rel; sigma>, so its
