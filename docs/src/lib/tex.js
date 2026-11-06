@@ -54,15 +54,36 @@ const TEXT_MACROS = Object.entries(facts.macros ?? {}).filter(([, v]) => !v.incl
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const math = (s) => katex.renderToString(siunitx(s), { throwOnError: true, output: 'html', macros });
 
-// A textual citation from a `Surname:2023` or `Surname+:2023` (et al.) key: "Surname et al. (2023)".
-// Other keys go: the site has no bibliography.
-const citet = (keys) => keys.split(',').map((k) => k.trim().match(/^([A-Za-z-]+)(\+?):(\d{4})/))
-  .filter(Boolean).map(([, n, plus, y]) => `${n}${plus ? ' et al.' : ''} (${y})`).join('; ');
+// A cited work's label and year: from the paper's .bib (facts.citations: "Doe", "Doe and Roe",
+// "Doe et al."), else from a `Surname:2023` or `Surname+:2023` (et al.) key. Other keys are unknown.
+const CITATIONS = facts.citations ?? {};
+function work(key) {
+  if (CITATIONS[key]) return CITATIONS[key];
+  const m = key.match(/^([A-Za-z-]+)(\+?):(\d{4})/);
+  return m ? { label: `${m[1]}${m[2] ? ' et al.' : ''}`, year: m[3] } : null;
+}
+
+// natbib's forms: \citet "Doe et al. (2023)", \citep "(see Doe et al. 2023, p. 3)", \cite and \citealp
+// the same without parentheses, \citeauthor the label. Unknown keys go; with none known, the whole
+// citation goes, and the space before it, so no "()" or "of  with" is left.
+function cite(space, cmd, notes, keys) {
+  // A label is the .bib's text, inserted into text that is already HTML-escaped: escape it too.
+  const works = keys.split(',').map((k) => work(k.trim())).filter(Boolean).map((w) => ({ ...w, label: esc(w.label) }));
+  if (works.length === 0) return '';
+  const [pre, post] = notes.length > 1 ? notes : ['', notes[0] ?? ''];
+  if (cmd === 'citeauthor') return space + works.map((w) => w.label).join('; ');
+  if (cmd.startsWith('citet')) return space + works.map((w) => (w.year ? `${w.label} (${w.year})` : w.label)).join('; ');
+  const inner = `${pre ? `${pre} ` : ''}${works.map((w) => (w.year ? `${w.label} ${w.year}` : w.label)).join('; ')}${post ? `, ${post}` : ''}`;
+  return space + (cmd.startsWith('citep') ? `(${inner})` : inner);
+}
 
 function text(s) {
   return esc(s)
-    .replace(/\\(?:citet|citetalias)\*?(?:\[[^\]]*\])*\{([^}]*)\}/g, (_, k) => citet(k))
-    .replace(/[\s~]*\\(?:cite[pt]?|citealp|citeauthor|citepalias)\*?(?:\[[^\]]*\])*\{[^}]*\}/g, '')
+    .replace(/([\s~]*)\\(cite[a-z]*)\*?((?:\s*\[[^\]]*\])*)\s*\{([^}]*)\}/g,
+      (_, space, cmd, notes, keys) => cite(space, cmd, [...notes.matchAll(/\[([^\]]*)\]/g)].map((n) => n[1].trim()), keys))
+    // Colour is the plot's, not the words': {\color{gray} solid gray} and \textcolor{c}{t} keep the text.
+    .replace(/\\textcolor\s*\{[^}]*\}/g, '').replace(/\\color\s*\{[^}]*\}\s*/g, '')
+    .replace(/\s*\\\\(?:\[[^\]]*\])?\s*/g, ' ')  // a line break, \\ or \\[2pt], reads as a space
     .replace(/\\(?:emph|textit|textsl)\{([^}]*)\}/g, '<em>$1</em>')
     .replace(/\\textbf\{([^}]*)\}/g, '<strong>$1</strong>')
     .replace(/\\url\{([^}]*)\}/g, (_, u) => { u = u.replace(/"/g, '&quot;').replace(/-/g, '&#45;'); return `<a href="${u}">${u}</a>`; })

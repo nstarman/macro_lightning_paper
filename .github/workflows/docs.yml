@@ -1,6 +1,6 @@
 name: Docs site
 
-# Builds the paper's docs site (syw-site 2026.11.05.1) on every push and pull request, and publishes
+# Builds the paper's docs site (syw-site 2026.11.06) on every push and pull request, and publishes
 # it to nstarkman.space/macro_lightning_paper/ only when docs/syw-site.yml says `publish: true` — set that at
 # arXiv submission, with the repository public and Pages set to "GitHub Actions". Until then
 # nothing is published: a private repository uploads a collaborator-only `docs-site` workflow
@@ -45,7 +45,7 @@ jobs:
         with:
           node-version: "24"
       - name: Install showyourwork and syw-site
-        run: pip install "showyourwork @ git+https://github.com/showyourwork/showyourwork@44d15103f64c3162e4a1a961f49f77d8e3634e49" "syw-site @ git+https://github.com/nstarman/syw-site@v2026.11.05.1"
+        run: pip install "showyourwork @ git+https://github.com/showyourwork/showyourwork@44d15103f64c3162e4a1a961f49f77d8e3634e49" "syw-site @ git+https://github.com/nstarman/syw-site@v2026.11.06"
       - name: Build the paper and its docs site
         env:
           SANDBOX_TOKEN: ${{ secrets.SANDBOX_TOKEN }}
