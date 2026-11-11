@@ -60,7 +60,7 @@ jobs:
           echo "::error::docs/syw-site.yml says publish: true, but this repository is private. Make it public at arXiv submission, or set publish: false."
           exit 1
       - name: Upload the site for Pages
-        if: steps.settings.outputs.publish == 'true' && !github.event.repository.private && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: steps.settings.outputs.publish == 'true' && !github.event.repository.private && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/dist
@@ -77,7 +77,7 @@ jobs:
 
   deploy:
     needs: build
-    if: needs.build.outputs.publish == 'true' && !github.event.repository.private && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: needs.build.outputs.publish == 'true' && !github.event.repository.private && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       pages: write

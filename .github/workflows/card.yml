@@ -3,7 +3,9 @@ name: Card
 # Keeps docs/card.json — what nstarkman.space knows about this paper (its record, what its
 # refs reach, its co-authors' places), the images the card draws and the author's portrait —
 # current: weekly, or by hand (Actions → Card → Run workflow). Opens a pull request when it
-# changed. It never builds or deploys the site.
+# changed, with a commit GitHub signs, and starts the docs build on it: a pull request opened with
+# the workflow's own token starts no workflow, so without this it would have no `build` check and a
+# protected default branch could never take it. It never deploys the site.
 
 on:
   schedule:
@@ -13,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write  # to start the docs build on the pull request
 
 jobs:
   card:
@@ -29,8 +32,10 @@ jobs:
           id=$(node -e "const s=require('fs').readFileSync('syw-site.yml','utf8'); const m=s.match(/^website_id:[ \t]*(\S+)/m); if (!m) process.exit(1); console.log(m[1])") \
             || { echo "::error::docs/syw-site.yml has no website_id"; exit 1; }
           node scripts/card.mjs "$id"
-      - uses: peter-evans/create-pull-request@v7
+      - id: pr
+        uses: peter-evans/create-pull-request@v7
         with:
+          sign-commits: true  # made through GitHub's API, so the commit is verified
           branch: syw-site/card
           title: "Refresh the card from nstarkman.space"
           commit-message: "Refresh the card from nstarkman.space"
@@ -39,3 +44,8 @@ jobs:
             docs/card.json
             docs/public/card
             docs/portrait.jpg
+      - name: Build the pull request
+        if: steps.pr.outputs.pull-request-operation == 'created' || steps.pr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run docs.yml --repo "$GITHUB_REPOSITORY" --ref syw-site/card
